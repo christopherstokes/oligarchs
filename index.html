@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Oligarchs</title>
+
+    <style>
+        .bar {
+            margin-bottom: 15px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Look At These Oligarchs</h1>
+
+    <div id="bars">
+    </div>
+
+    <script>
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
+            try {
+                decimalCount = Math.abs(decimalCount);
+                decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+                const negativeSign = amount < 0 ? "-" : "";
+
+                let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+                let j = (i.length > 3) ? i.length % 3 : 0;
+
+                return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g,
+                    "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(
+                    2) : "");
+            } catch (e) {
+                console.log(e)
+            }
+        };
+
+        const oligarchs = [
+            ["Bernie Sanders", 2000000],
+            ["Mitt Romney", 250000000],
+            ["Papa John", 500000000],
+            ["Tyler Perry", 600000000],
+            ["Bob Johnson", 1000000000],
+            ["Jay-Z", 1000000000],
+            ["Donald Trump", 2500000000],
+            ["Oprah", 3500000000],
+            ["Mark Cuban", 4100000000],
+            ["George Soros", 8300000000],
+            ["Mike Bloomberg", 60200000000],
+            ["Bill Gates", 110000000000],
+            ["Jeff Bezos", 126300000000]
+        ]
+
+        let barsElem = document.getElementById("bars");
+
+        for (let i = 0; i < oligarchs.length; i++) {
+            let bar = document.createElement("div");
+            bar.style.width = `${oligarchs[i][1]/500000}px`;
+            bar.style.backgroundColor = getRandomColor();
+            bar.classList.add("bar");
+            bar.appendChild(document.createTextNode(`${oligarchs[i][0]} : $${formatMoney(oligarchs[i][1])}`));
+            barsElem.appendChild(bar);
+        }
+    </script>
+</body>
+
+</html>
